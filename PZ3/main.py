@@ -77,7 +77,7 @@ def main():
             if output == 'exit':
                 print("Завершена подпрограмма ", func)
                 break
-            elif output == 'q':
+            else:
                 print_menu()
         except TypeError:
             print('Вы ввели несуществующую функцию')
