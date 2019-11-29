@@ -18,20 +18,23 @@ def listdir():
         ValueError: Raises an exception while args
         or operation is not correct.
     """
-    startpath = "/home/user/"
-    foldername = input("Введите название папки: ")
-    if ".." in foldername:
-        print("Сочетание \"..\", предполагает доступ к "
-              "родительскому каталогу, оно является запрещенным")
-        return
-    foldername.replace(" ", r"\ ")
-    path = os.path.join(startpath, foldername)
-    try:
-        files = os.listdir(path)
-        print(files)
-    except FileNotFoundError as error:
-        print("Не существует", error)
-        return
+    while True:
+        startpath = "/home/apbfor"
+        foldername = input("Введите название папки: ")
+        if foldername == '0exit':
+            break
+        foldername.replace(" ", r"\ ")
+        path = os.path.join(startpath, foldername)
+        path = os.path.abspath(path)
+        if startpath not in path:
+            print("Вы пытаетесь получить доступ к родительскому каталогу")
+            return
+        try:
+            files = os.listdir(path)
+            print(files)
+        except FileNotFoundError as error:
+            print("Не существует", error)
+            return
 
 
 if __name__ == '__main__':
