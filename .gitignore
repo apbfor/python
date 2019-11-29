@@ -2,5 +2,5 @@
 **/venv/
 /**/.coverage
 /**/*.pyc
-*.pyc
+
 /**/__pycache__/
