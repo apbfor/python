@@ -1,4 +1,4 @@
-# Created by apbfor on 10.11.20
+# Created by apbfor on 10.11.19
 import random
 
 
@@ -34,7 +34,7 @@ def shout_on_me():
 
 def calc():
     while True:
-        ent = input('Введите выражение ')
+        ent = input('Введите выражение: ')
         if ent == 'exit' or ent == 'q':
             return ent
         try:
@@ -77,7 +77,7 @@ def main():
             if output == 'exit':
                 print("Завершена подпрограмма ", func)
                 break
-            else:
+            elif output == 'q':
                 print_menu()
         except TypeError:
             print('Вы ввели несуществующую функцию')
