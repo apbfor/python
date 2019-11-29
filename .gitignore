@@ -1,5 +1,5 @@
 **/.idea/
 **/venv/
-**/.coverage
-**/*.pyc
-**/__pycache__/
+/**/.coverage
+/**/.pyc
+/**/__pycache__/
