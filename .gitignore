@@ -2,5 +2,6 @@
 **/venv/
 /**/.coverage
 /**/*.pyc
-
+.coverage
 /**/__pycache__/
+flask/

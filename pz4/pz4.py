@@ -3,7 +3,6 @@
 В этом модуле реализованы функции,
 для выполенения заданий из ПЗ4
 """
-import os
 import random
 
 
@@ -37,36 +36,6 @@ def calc(var1, var2, operation):
     if operation not in operations:
         raise ValueError("Такой операции не существует")
     return operations[operation](var1, var2)
-
-
-def listdir():
-    """
-    Shows files on path
-
-    Returns:
-        "None" if path not exists or is parent dir
-
-    Raises:
-        ValueError: Raises an exception while args
-        or operation is not correct.
-    """
-    while True:
-        startpath = "/home/apbfor"
-        foldername = input("Введите название папки: ")
-        if foldername == '0exit':
-            break
-        foldername.replace(" ", r"\ ")
-        path = os.path.join(startpath, foldername)
-        path = os.path.abspath(path)
-        if startpath not in path:
-            print("Вы пытаетесь получить доступ к родительскому каталогу")
-            return
-        try:
-            files = os.listdir(path)
-            print(files)
-        except FileNotFoundError as error:
-            print("Не существует", error)
-            return
 
 
 class Guesser:
@@ -111,8 +80,6 @@ class Guesser:
                 print('Бери ниже')
             elif check == -1:
                 print('Бери выше')
-            else:
-                print('Что-то сломалось')
 
 
 def run_guesser():
@@ -122,4 +89,4 @@ def run_guesser():
 
 
 if __name__ == '__main__':
-    listdir()
+    run_guesser()
