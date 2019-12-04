@@ -68,7 +68,7 @@ class Ellipse(Figure):
             print(' ', end='')
         print('*', end='')
         print()
-        for i in range(int(self.size)*2):
+        for i in range(int(self.size)*3):
             print('*', end='')
             for j in range(int(self.size) * 3 + 3):
                 print(' ', end='')

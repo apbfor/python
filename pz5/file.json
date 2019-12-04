@@ -1,0 +1,12 @@
+{
+    "brand": "BMW",
+    "model": "X5",
+    "submodel": "M",
+    "produced": 2015,
+    "species" : [
+        {
+            "HP": 286,
+            "torque" : 400
+        }
+    ]
+}
