@@ -1,91 +1,128 @@
-from datetime import date
-
-class Human:
-    def __init__(self, name, age=0):
-        self._name = name
-        self._age = age
-
-    def _say(self, text):
-        print(text)
-
-    def say_name(self):
-        self._say(f"Hello, I am {self._name}")
-
-    def say_how_old(self):
-        self._say(f"I am {self._age} years old")
+from math import pi
 
 
-class Planet:
-    """
-    Planet doc
-    """
-    def __init__(self, name, mass=None, population=None):
-        self.name = name
-        self.mass = mass
-        self.population = population or []
+class Figure:
+    def draw(self):
+        pass
+
+    def __init__(self, size):
+        self.size = size
+
+
+class Circle(Figure):
+    def __init__(self, size):
+        Figure.__init__(self, size)
 
     def __str__(self):
-        return self.name
+        return "Circle"
 
     def __repr__(self):
-        return "Planet {0}".format(self.name)
+        return "This is Circle"
 
-    def add_human(self, human):
-        print("Welcome to {0}, {1}!".format(self.name, human.name))
-        self.population.append(human)
+    def draw(self):
+        print('  ', end='')  # magic value
+        for i in range(self.size+1):
+            print('*', end='  ')
+        print()
+        print(' ', end='')
+        print('*', end='')
+        for i in range(int(self.size)*3+1):
+            print(' ', end='')
+        print('*', end='')
+        print()
+        for i in range(self.size):
+            print('*', end='')
+            for j in range(int(self.size)*3+3):
+                print(' ', end='')
+            print('*')
+        print(' ', end='')
+        print('*', end='')
+        for i in range(int(self.size)*3 + 1):
+            print(' ', end='')
+        print('*', end='')
+        print()
+        print('  ', end='')  # magic value
+        for i in range(self.size + 1):
+            print('*', end='  ')
+        print()
 
 
-class Event:
-    def __init__(self, description, event_date):
-        self.description = description
-        self.date = event_date
+class Ellipse(Figure):
+    def __init__(self, size):
+        Figure.__init__(self, size)
 
     def __str__(self):
-        return "Event \"{0}\" at {1}".format(self.description, self.date)
+        return "Ellipse"
 
+    def __repr__(self):
+        return "This is Ellipse"
+
+    def draw(self):
+        print('  ', end='')  # magic value
+        for i in range(self.size + 1):
+            print('*', end='  ')
+        print()
+        print(' ', end='')
+        print('*', end='')
+        for i in range(int(self.size) * 3 + 1):
+            print(' ', end='')
+        print('*', end='')
+        print()
+        for i in range(int(self.size)*2):
+            print('*', end='')
+            for j in range(int(self.size) * 3 + 3):
+                print(' ', end='')
+            print('*')
+        print(' ', end='')
+        print('*', end='')
+        for i in range(int(self.size) * 3 + 1):
+            print(' ', end='')
+        print('*', end='')
+        print()
+        print('  ', end='')  # magic value
+        for i in range(self.size + 1):
+            print('*', end='  ')
+        print()
+
+
+class Square(Figure):
+    """Minimum size = 6"""
+    def __init__(self, size):
+        Figure.__init__(self, size)
+
+    def __str__(self):
+        return "Square"
+
+    def __repr__(self):
+        return "This is square"
+
+    def draw(self):
+        for i in range(self.size+1):
+            print('*', end='')
+        print()
+        for i in range(int(self.size/2) - 2):
+            print('*', end='')
+            for j in range(self.size-1):
+                print(' ', end='')
+            print('*')
+        for i in range(self.size+1):
+            print('*', end='')
+        print()
 
 
 def main():
-    solar_system = []
-    planet_names = [
-        "Mercury", "Venus", "Mars",
-        "Jupiter", "Saturn", "Uranus", "Neptune"
-    ]
+    square = Square(12)
+    square.draw()
+    circle = Circle(3)
+    circle.draw()
+    print()
+    ellipse = Ellipse(4)
+    ellipse.draw()
+    col = [square, circle, ellipse]
+    for i in col:
+        print(i)
+    print(col)
 
-    for name in planet_names:
-        planet = Planet(name)
-        solar_system.append(planet)
-
-    bob = Human("Bob", 29)
-    bob.say_name()
-    bob.say_how_old()
-
-    event_description = "@classmethod"
-    event_date = date.today()
-    event = Event(event_description, event_date)
-    print(event)
-    for letter in 'python':
-        print(ord(letter))
-    bob._say("Whatever we want")
-
-    for num in SquareIterator(1, 5):
-        print(num)
-
-class SquareIterator:
-    def __init__(self, start, end):
-        self.current = start
-        self.end = end
-
-    def __iter__(self):
-        return self
-
-    def __next__(self):
-        if self.current >= self.end:
-            raise StopIteration
-
-        result = self.current ** 2
-        self.current += 1
-        return result
 
 if __name__ == '__main__':
     main()
