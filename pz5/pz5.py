@@ -1,15 +1,26 @@
-from math import pi
+"""
+Module for PZ5
+Inside: Drawing figures
+"""
 
 
 class Figure:
+    """Superclass for all figures"""
     def draw(self):
-        pass
+        """drawing funcion"""
 
     def __init__(self, size):
         self.size = size
 
+    def __str__(self):
+        pass
+
+    def __repr__(self):
+        pass
+
 
 class Circle(Figure):
+    """Class for circles"""
     def __init__(self, size):
         Figure.__init__(self, size)
 
@@ -20,6 +31,7 @@ class Circle(Figure):
         return "This is Circle"
 
     def draw(self):
+        """Draws one circle any size"""
         print('  ', end='')  # magic value
         for i in range(self.size+1):
             print('*', end='  ')
@@ -48,6 +60,7 @@ class Circle(Figure):
 
 
 class Ellipse(Figure):
+    """class for ellipses"""
     def __init__(self, size):
         Figure.__init__(self, size)
 
@@ -58,6 +71,7 @@ class Ellipse(Figure):
         return "This is Ellipse"
 
     def draw(self):
+        """draw one ellipse current size"""
         print('  ', end='')  # magic value
         for i in range(self.size + 1):
             print('*', end='  ')
@@ -86,7 +100,10 @@ class Ellipse(Figure):
 
 
 class Square(Figure):
-    """Minimum size = 6"""
+    """
+    class for square
+    Minimum size = 6
+    """
     def __init__(self, size):
         Figure.__init__(self, size)
 
@@ -97,6 +114,7 @@ class Square(Figure):
         return "This is square"
 
     def draw(self):
+        """draw one square current size"""
         for i in range(self.size+1):
             print('*', end='')
         print()
@@ -111,6 +129,7 @@ class Square(Figure):
 
 
 def main():
+    """main func for run all this code"""
     square = Square(12)
     square.draw()
     circle = Circle(3)
