@@ -5,4 +5,4 @@
 .coverage
 /**/__pycache__/
 flask/
-/**/**/.xlsx
+/**/.xlsx
