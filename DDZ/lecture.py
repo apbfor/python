@@ -1,110 +1,80 @@
-"""
-Данный модуль содержит описание занятия
-"""
+# pylint: disable=missing-docstring, invalid-name, protected-access, line-too-long
+from sys import stderr
+
+COMP_CLASSES = ['122', '103', '113', '124', '20_УНЦ', '17_УНЦ', 'КВАНТ-КК']
 
 
 class Lecture:
     """
-    Каждый объект класса содержит поля:
-    * полная запись из ячейки таблицы
-    * вид занятия
-    * номер занятия (если есть)
-    * номер группы слушателей
-    * аудитория
-    * признак, яляется ли аудитория компьютерной
+    Класс содержит описание учебного занятия
     """
-    def __init__(self, lecture):
-        self.lecture = lecture  # полная строка с записью
-        self.lecture_type = ""
-        self.lecture_number = ""
-        self.classroom = ""
-        self.group_number = ""
-        self.is_computer = False
-        # self.subject_name = ""
-        # self.lecture_types = {'ПЗ': 'ПЗ',
-        #                       'лаб.раб': 'ЛР',
-        #                       'сем': 'Семинар',
-        #                       'лекция': 'Лекция',
-        #                       'зачет': 'Зачёт'}
-        self.computer_list = [122, 113, 103, '20_УНЦ', '15_УНЦ',
-                              '17_УНЦ', 'КВАНТ-КК']
-        self.parse()
-        if self.classroom in str(self.computer_list):
-            self.is_computer = True
-        # self.lecture_type = self.lecture_types[self.lecture_type]
+    _full_value = ''
+    _number = ''
+    _name = ''
+    _in_comp_class = False
+    _groups = []
+    _type = ''
+    _classroom = ''
 
-    def parse(self):
-        """
-        Производит парсинг полей занятия из строки,
-        полученной из ячейки таблицы
-        :return:
-        """
-        step1 = self.lecture.split(':')
-        if len(step1) == 3:
-            pass
-        else:
-            # self.subject_name = step1[0]
-            splited_lecture = step1[1].split('\n')
-            if splited_lecture[0] == '' or splited_lecture[0] == ' ':
-                lecture_desk = splited_lecture[1]
-                self.lecture_type = lecture_desk.split('-')[0]
-                if self.lecture_type[0] == ' ':
-                    self.lecture_type = self.lecture_type.replace(' ', '')
-                self.lecture_number = lecture_desk.split('-')[1].split(' ')[0]
-                if len(splited_lecture) == 4:
-                    self.classroom = splited_lecture[2].split(' ')[1]
-                    self.group_number = splited_lecture[3].split(' ')[1]
-                    if len(splited_lecture[3].split(' ')) == 3:
-                        self.group_number += ' '
-                        self.group_number += splited_lecture[3].split(' ')[2]
-                else:
-                    if splited_lecture[1][0] != ' ':
-                        self.classroom = splited_lecture[1].split(' ')[2]
-                    else:
-                        self.classroom = splited_lecture[1].split(' ')[3]
-                    self.group_number = splited_lecture[2].split(' ')[1]
-                    for i in range(2, len(splited_lecture[2].split(' '))):
-                        self.group_number += ' '
-                        self.group_number += splited_lecture[2].split(' ')[i]
-            else:
-                lecture_desk = splited_lecture[0]
-                self.lecture_type = lecture_desk.split('-')[0]
-                self.lecture_type = self.lecture_type.replace(' ', '')
-                if len(splited_lecture) == 2:
-                    self.lecture_number = lecture_desk.split('-')[1].split(' ')[0]
-                    self.classroom = splited_lecture[0].split(' ')[3]
-                    self.group_number = splited_lecture[1].split(' ')[1]
-                else:
-                    self.classroom = splited_lecture[1].split(' ')[1]
-                    self.lecture_number = lecture_desk.split('-')[1]
-                    self.group_number = splited_lecture[2].split(' ')[1]
-                    for i in range(2, len(splited_lecture[2].split(' '))):
-                        self.group_number += ' '
-                        self.group_number += splited_lecture[2].split(' ')[i]
+    def __eq__(self, other):
+        return self._full_value == other._full_value if isinstance(other, Lecture) else False
 
-    def __str__(self):
+    def to_list(self, teacher_name) -> list:
         """
-        Выводит в удобном виде информацию о занятии при print(lecture)
-        :return:
+        Представляет пару как лист
+        :param teacher_name: Имя преподавателя в виде строки
+        :return: лист, содержащий текущую пару
         """
-        # print("Subject name:   ", self.subject_name)
-        printer = "\n\nLecture type:   "
-        printer += str(self.lecture_type)
-        printer += "\nLecture number: "
-        printer += str(self.lecture_number)
-        printer += "\nClassroom:      "
-        printer += str(self.classroom)
-        printer += "\nGroup_number:   "
-        printer += str(self.group_number)
-        printer += "\nIs computer:    "
-        printer += str(self.is_computer)
-        return printer
+        return [teacher_name, self._groups, self._classroom, self._in_comp_class] if self._full_value else []
+    @staticmethod
+    def cell_parser(pair_str):
+        """
+        Парсит входящие значения из ячеек таблицы, возвращает объект типа Lecture
+        :param pair_str: строковое значение из таблицы
+        :return: Объект типа Lecture
+        """
+        lecture = Lecture()
+        lecture._full_value = pair_str
 
-    def __repr__(self):
-        """
-        Выводит информацию о занятии в итерируемых объектах
-        :return:
-        """
-        if self.lecture is None:
-            return None
-        return self.__str__()
+        if len(pair_str.split(':')) > 2:  # на случай, если в одно занятие несколько пар
+            print("В одну ячейку записано более одного занятия:\n", lecture._full_value, file=stderr)
+            return lecture
+
+        if len(pair_str.split(':')) < 2:
+            return lecture
+
+        lecture._name = pair_str.split(':')[0]
+        buf = pair_str.split(':')[1]
+        buf_list = pair_str.split('\n')
+        lecture._classroom = buf_list[-2].split(' ')[-1]
+        lecture._in_comp_class = lecture._classroom in COMP_CLASSES
+        buf = buf.split('-')
+        buf_type = buf[0]
+        buf_number = buf[1]
+        buf = buf_list[-1].split('гр. ')[1]
+        lecture._groups = buf.split('; ')
+        lecture._type = buf_type.split('\n')[-1].split(' ')[-1]
+        lecture._number = buf_number.split('\n')[0].split(' ')[0]
+
+        return lecture
+
+    def get_full_value(self) -> str:
+        return self._full_value
+
+    def get_name(self) -> str:
+        return self._name
+
+    def get_type(self) -> str:
+        return self._type
+
+    def get_lecture_number(self) -> str:
+        return self._number
+
+    def is_in_computer_class(self) -> bool:
+        return self._in_comp_class
+
+    def get_classroom(self) -> str:
+        return self._classroom
+
+    def get_groups(self) -> list:
+        return self._groups
